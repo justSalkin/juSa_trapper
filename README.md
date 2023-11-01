@@ -5,7 +5,8 @@ Script for a traveling trapper in RDR2
 
 1) Add ``juSa_trapper`` to your resources folder
 2) Add ``ensure juSa_trapper`` to your server.cfg
-3) Start server
+3) rename one of the configs you wanna use to ``config.lua``
+4) Start server
 
 # Framework
 Currently this script only works with VORP.
