@@ -27,4 +27,8 @@ Credits also to the bcc-team.
 
 # Changelog
 
+1.1
+- fixed problem with non spawning npc
+- fixed bug with shop prices
+
 Hope you enjoying working with the script :)
