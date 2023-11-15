@@ -4,7 +4,7 @@ rdr3_warning 'I acknowledge that this is a prerelease build of RedM, and I am aw
 
 author 'justSalkin'
 description 'Script for a traveling trapper'
-version '1.0'
+version '1.1'
 
 client_script {
     '/client/warmenu.lua',
@@ -26,4 +26,4 @@ dependencies {
     'vorp_inventory',
 }
 
--- LAST EDIT by just_Salkin 01.11.2023 | WHITE-SANDS-RP german RP server
+-- LAST EDIT by just_Salkin 15.11.2023 | WHITE-SANDS-RP german RP server
