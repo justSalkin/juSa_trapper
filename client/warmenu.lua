@@ -4,7 +4,7 @@ WarMenu.debug = false
 
 
 local menus = { }
-local keys = { up = 0x911CB09E, down = 0x4403F97F, left = 0xAD7FCC5B, right = 0x65F9EC5B, select = 0xC7B5340A, back = 0x308588E6 }
+local keys = { up = 0x6319DB71, down = 0x05CA7C52, left = 0xA65EBAB4, right = 0xDEB34313, select = 0xC7B5340A, back = 0x156F7119 }
 local optionCount = 0
 
 local currentKey = nil
@@ -168,7 +168,7 @@ function WarMenu.CreateMenu(id, title)
 	-- Default settings
 	menus[id] = { }
 	menus[id].title = title
-	menus[id].subTitle = 'INTERACTION MENU'
+	menus[id].subTitle = "" --'INTERACTION MENU'
 
 	menus[id].visible = false
 
@@ -195,8 +195,6 @@ function WarMenu.CreateMenu(id, title)
 	menus[id].menuBackgroundColor = { r = 0, g = 0, b = 0, a = 000 }
 
 	menus[id].subTitleBackgroundColor = { r = menus[id].menuBackgroundColor.r, g = menus[id].menuBackgroundColor.g, b = menus[id].menuBackgroundColor.b, a = 255 }
-
-	menus[id].buttonPressedSound = { name = "SELECT", set = "HUD_FRONTEND_DEFAULT_SOUNDSET" } --https://pastebin.com/0neZdsZ5
 
 	debugPrint(tostring(id)..' menu created')
 end
@@ -240,7 +238,9 @@ end
 
 function WarMenu.OpenMenu(id)
 	if id and menus[id] then
-		PlaySoundFrontend(-1, "SELECT", "HUD_FRONTEND_DEFAULT_SOUNDSET", true)
+        Citizen.InvokeNative(0x0F2A2175734926D8, "SELECT", "HUD_SHOP_SOUNDSET") -- load sound
+        Citizen.InvokeNative(0x67C540AA08E4A6F5, "SELECT", "HUD_SHOP_SOUNDSET", true) --play sound
+        -- find more sounds here https://pastebin.com/0neZdsZ5
 		setMenuVisible(id, true)
 		debugPrint(tostring(id)..' menu opened')
 	else
@@ -278,7 +278,8 @@ function WarMenu.CloseMenu()
 			menus[currentMenu].aboutToBeClosed = false
 			setMenuVisible(currentMenu, false)
 			debugPrint(tostring(currentMenu)..' menu closed')
-			PlaySoundFrontend(-1, "QUIT", "HUD_FRONTEND_DEFAULT_SOUNDSET", true)
+            Citizen.InvokeNative(0x0F2A2175734926D8, "QUIT", "HUD_SHOP_SOUNDSET")
+            Citizen.InvokeNative(0x67C540AA08E4A6F5, "QUIT", "HUD_SHOP_SOUNDSET", true)
 			optionCount = 0
 			currentMenu = nil
 			currentKey = nil
@@ -305,11 +306,13 @@ function WarMenu.Button(text, subText)
 
 		if isCurrent then
 			if currentKey == keys.select then
-				PlaySoundFrontend(-1, menus[currentMenu].buttonPressedSound.name, menus[currentMenu].buttonPressedSound.set, true)
+                Citizen.InvokeNative(0x0F2A2175734926D8, "SELECT", "HUD_SHOP_SOUND")
+                Citizen.InvokeNative(0x67C540AA08E4A6F5, "SELECT", "HUD_SHOP_SOUND", true)
 				debugPrint(buttonText..' button pressed')
 				return true
 			elseif currentKey == keys.left or currentKey == keys.right then
-				PlaySoundFrontend(-1, "NAV_UP_DOWN", "HUD_FRONTEND_DEFAULT_SOUNDSET", true)
+                Citizen.InvokeNative(0x0F2A2175734926D8, "MONEY", "HUD_DOMINOS_SOUNDSET")
+                Citizen.InvokeNative(0x67C540AA08E4A6F5, "MONEY", "HUD_DOMINOS_SOUNDSET", true)
 			end
 		end
 
@@ -392,7 +395,8 @@ function WarMenu.Display()
 			currentKey = nil
 
 			if IsControlJustReleased(1, keys.down) then
-				PlaySoundFrontend(-1, "NAV_UP_DOWN", "HUD_FRONTEND_DEFAULT_SOUNDSET", true)
+				Citizen.InvokeNative(0x0F2A2175734926D8, "NAV_DOWN", "HUD_DOMINOS_SOUNDSET")
+                Citizen.InvokeNative(0x67C540AA08E4A6F5, "NAV_DOWN", "HUD_DOMINOS_SOUNDSET", true)
 
 				if menus[currentMenu].currentOption < optionCount then
 					menus[currentMenu].currentOption = menus[currentMenu].currentOption + 1
@@ -400,7 +404,8 @@ function WarMenu.Display()
 					menus[currentMenu].currentOption = 1
 				end
 			elseif IsControlJustReleased(1, keys.up) then
-				PlaySoundFrontend(-1, "NAV_UP_DOWN", "HUD_FRONTEND_DEFAULT_SOUNDSET", true)
+				Citizen.InvokeNative(0x0F2A2175734926D8, "NAV_UP", "HUD_DOMINOS_SOUNDSET")
+                Citizen.InvokeNative(0x67C540AA08E4A6F5, "NAV_UP", "HUD_DOMINOS_SOUNDSET", true)
 
 				if menus[currentMenu].currentOption > 1 then
 					menus[currentMenu].currentOption = menus[currentMenu].currentOption - 1
@@ -415,7 +420,8 @@ function WarMenu.Display()
 				currentKey = keys.select
 			elseif IsControlJustReleased(1, keys.back) then
 				if menus[menus[currentMenu].previousMenu] then
-					PlaySoundFrontend(-1, "BACK", "HUD_FRONTEND_DEFAULT_SOUNDSET", true)
+					Citizen.InvokeNative(0x0F2A2175734926D8, "BACK", "HUD_SHOP_SOUNDSET")
+                    Citizen.InvokeNative(0x67C540AA08E4A6F5, "BACK", "HUD_SHOP_SOUNDSET", true)
 					setMenuVisible(menus[currentMenu].previousMenu, true)
 				else
 					WarMenu.CloseMenu()
@@ -489,9 +495,4 @@ end
 
 function WarMenu.SetMenuFocusColor(id, r, g, b, a)
 	setMenuProperty(id, 'menuFocusColor', { ['r'] = r, ['g'] = g, ['b'] = b, ['a'] = a or menus[id].menuFocusColor.a })
-end
-
-
-function WarMenu.SetMenuButtonPressedSound(id, name, set)
-	setMenuProperty(id, 'buttonPressedSound', { ['name'] = name, ['set'] = set })
 end

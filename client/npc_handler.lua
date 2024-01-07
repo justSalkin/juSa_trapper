@@ -50,7 +50,7 @@ AddEventHandler('juSa_Trapper:spawnNPC', function(spawn)
     while true do 
         Citizen.Wait(0) 
         local player = GetEntityCoords(PlayerPedId())
-        if GetDistanceBetweenCoords(spawn.x, spawn.y, spawn.z, player.x, player.y, player.z, false) < 3 then
+        if GetDistanceBetweenCoords(spawn.x, spawn.y, spawn.z, player.x, player.y, player.z, false) < 2 then
             local label = CreateVarString(10, 'LITERAL_STRING', Config.Language.talk)
             PromptSetActiveGroupThisFrame(prompts, label)
             if Citizen.InvokeNative(0xC92AC953F0A982AE, talktonpc) then --if pressing the interaction-key
