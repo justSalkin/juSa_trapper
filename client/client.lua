@@ -98,10 +98,22 @@ end)
 
 RegisterNetEvent('juSa_Trapper:infosenderforbuy')
 AddEventHandler('juSa_Trapper:infosenderforbuy', function(var, buy_item, buy_price)
+    local type = buy
+    local item = buy_item
+    local price = buy_price
     TriggerServerEvent('juSa_Trapper:buy', var, buy_item, buy_price)
+    if Config.DiscordIntegration == true then
+        TriggerServerEvent("juSa_Trapper:discord", type, var, item, price)
+    end
 end)
 
 RegisterNetEvent('juSa_Trapper:infosenderforsell')
 AddEventHandler('juSa_Trapper:infosenderforsell', function(sell_item, sell_price, var)
+    local type = sell
+    local item = sell_item
+    local price = sell_price
     TriggerServerEvent('juSa_Trapper:sell', sell_item, sell_price, var)
+    if Config.DiscordIntegration == true then
+        TriggerServerEvent("juSa_Trapper:discord", type, var, item, price)
+    end
 end)

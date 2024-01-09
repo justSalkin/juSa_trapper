@@ -4,7 +4,7 @@ rdr3_warning 'I acknowledge that this is a prerelease build of RedM, and I am aw
 
 author 'justSalkin'
 description 'Script for a traveling trapper'
-version '1.2'
+version '1.3'
 
 client_script {
     '/client/warmenu.lua',
@@ -25,3 +25,5 @@ dependencies {
     'vorp_core',
     'vorp_inventory',
 }
+
+-- for support or/and more scripts join: https://discord.gg/DUax6SsEt2

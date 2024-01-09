@@ -37,7 +37,6 @@ AddEventHandler('juSa_Trapper:sell', function(sell_item, sell_price, var)
       Character.addCurrency(0, price2) 
       amountcatch = amountcatch + 1
     until amountcatch >= var
-    VORPcore.AddWebhook(Character.firstname .. " " .. Character.lastname .. " " .. Character.identifier, ShopWebhook, 'Items Sold ' .. sell_item .. ' Amount sold ' .. var .. ' Sold for ' .. tonumber(sell_price))
   elseif itemcount < tonumber(var) then
     VORPcore.NotifyBottomRight(source, Config.Language.NoItem, 4000) 
   end
@@ -56,8 +55,45 @@ AddEventHandler('juSa_Trapper:buy', function(var, buy_item, buy_price)
   if currcash >= totalamountmultiplied then
     VorpInv.addItem(source, buy_item, var)
     Character.removeCurrency(0, totalamountmultiplied)
-    VORPcore.AddWebhook(Character.firstname .. " " .. Character.lastname .. " " .. Character.identifier, ShopWebhook, 'Items bought ' .. buy_item .. ' Item price ' .. tostring(buy_price) .. ' Amount bought ' .. tostring(var))
   elseif currcash < totalamountmultiplied then
     VORPcore.NotifyBottomRight(source, Config.Language.NoMoney, 4000) 
   end
+end)
+
+RegisterServerEvent('juSa_Trapper:discord')
+AddEventHandler("juSa_Trapper:discord", function(type, var, item, price)
+  local User = VORPcore.getUser(source)
+  local Character = User.getUsedCharacter
+  local CharName
+  local title
+  if Character ~= nil then
+    if Character.lastname ~= nil then
+      CharName = Character.firstname .. ' ' .. Character.lastname
+    else
+      CharName = Character.firstname
+    end
+  end
+  local DiscordWebhook = Config.DiscordWebHook
+  if type == sell then
+    title = Config.Language.discord_sold
+  elseif type == buy then
+    title = Config.Language.discord_bought
+  end
+  local Content = {
+      username = Config.DiscordBotName,
+      content = Config.Language.discord_title,
+      embeds = {{
+          title = title,
+          description = CharName .. " " .. title .. " " .. tostring(var) .. "x " .. item .. Config.Language.discord_price .. tostring(price),
+          color = 16711680 -- embed color
+      }}
+  }
+  
+  PerformHttpRequest(DiscordWebhook, function(err, text, headers)
+      if err == 200 then
+          print("message send: " .. text)
+      else
+          print("error trying to send message: " .. err)
+      end
+  end, "POST", json.encode(Content), {["Content-Type"] = "application/json"})
 end)

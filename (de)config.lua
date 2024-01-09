@@ -1,7 +1,8 @@
 Config = {}
-
---webhook, place your webhook url here
-ShopWebhook = ''
+Config.DiscordIntegration = true
+Config.DiscordWebHook = ""
+Config.DiscordBotName= "juSa Trapper"
+Config.Debug = false
 
 Config.TrapperSetup = {
     blip = true,
@@ -67,6 +68,11 @@ Config.Language = {
 
     NoItem = "Du hast nicht genügend Gegenstände.",
     NoMoney = "Du hast nicht genügend Bargeld.",
+
+    discord_title = "Something happend in your juSa_trapper Script.",
+    discord_bought = " kaufte ",
+    discord_sold = " verkaufte ",
+    discord_price = " für ",
 }
 
 Config.keys = {
