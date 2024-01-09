@@ -28,6 +28,9 @@ Credits also to the bcc-team.
 
 # Changelog
 
+1.3
+- fixed webhook function
+
 1.2
 - fixed bug with menu sounds
 
